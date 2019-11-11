@@ -1,7 +1,7 @@
-<!--<template>
+<template>
   <div class="app-container">
 
-    &lt;!&ndash;搜索条件区&ndash;&gt;
+    <!--搜索条件区-->
     <div class="filter-container">
       <el-input
         v-model="listQuery.deptName"
@@ -11,7 +11,7 @@
         @keyup.enter.native="handleFilter"
       />
       <el-select v-model="listQuery.personCount" class="filter-item" placeholder="人员数量" @change="handleFilter">
-        <el-option key="0" value="0" label="&#45;&#45;请选择&#45;&#45;" />
+        <el-option key="0" value="0" label="--请选择--" />
         <el-option v-for="item in personCount" :key="item.key" :value="item.key" :label="item.value" />
       </el-select>
 
@@ -26,7 +26,7 @@
       </el-button>
     </div>
 
-    &lt;!&ndash;部门数据表格&ndash;&gt;
+    <!--部门数据表格-->
     <el-table v-loading="listLoading" :data="pageData" border>
       <el-table-column sortable prop="id" label="编号" align="center" width="100" />
       <el-table-column sortable prop="peoples" label="人员数量" align="center" width="120">
@@ -47,18 +47,23 @@
       </el-table-column>
     </el-table>
 
-    &lt;!&ndash;分页器&ndash;&gt;
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
-    @pagination="getList"/>
+    <!--分页器-->
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
 
   </div>
-</template>-->
+</template>
 
-<!--<script>
-// import Pagination from '@/components/Pagination'
+<script>
+import Pagination from '@/components/Pagination'
 
 export default {
-//  components: { Pagination },
+  components: { Pagination },
   filters: {
     hotTagType(value) {
       return value >= 25 ? 'danger' : (value >= 15 ? 'warning' : 'success')
@@ -100,7 +105,7 @@ export default {
 
   }
 }
-</script>-->
+</script>
 
 <style>
 
