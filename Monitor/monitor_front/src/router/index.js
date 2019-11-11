@@ -11,6 +11,7 @@ import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
+import devicesRouter from './modules/devices'
 
 import newsRouter from './modules/news'
 import deptRouter from './modules/department'
@@ -132,6 +133,9 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
+  devicesRouter,
+
   {
     path: '/permission',
     component: Layout,
