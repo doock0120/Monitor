@@ -2,7 +2,7 @@
 <template>
   <div class="app-container">
 
-    &lt;!&ndash;搜索条件区&ndash;&gt;
+    <!--搜索条件区-->
     <div class="filter-container">
       <el-input
         v-model="listQuery.deptName"
@@ -27,7 +27,7 @@
       </el-button>
     </div>
 
-    &lt;!&ndash;部门数据表格&ndash;&gt;
+    <!--部门数据表格-->
     <el-table v-loading="listLoading" :data="pageData" border>
       <el-table-column sortable prop="id" label="编号" align="center" width="100" />
       <el-table-column sortable prop="peoples" label="人员数量" align="center" width="120">
@@ -48,7 +48,7 @@
       </el-table-column>
     </el-table>
 
-    &lt;!&ndash;分页器&ndash;&gt;
+    <!--分页器-->
     <pagination
       v-show="total>0"
       :total="total"
