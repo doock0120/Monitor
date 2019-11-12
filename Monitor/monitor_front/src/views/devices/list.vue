@@ -1,8 +1,7 @@
-
 <template>
   <div class="app-container">
 
-    &lt;!&ndash;搜索条件区&ndash;&gt;
+    <!--搜索条件区-->
     <div class="filter-container">
       <el-input
         v-model="listQuery.deptName"
@@ -48,7 +47,7 @@
       </el-table-column>
     </el-table>
 
-    &lt;!&ndash;分页器&ndash;&gt;
+    <!--分页器-->
     <pagination
       v-show="total>0"
       :total="total"
