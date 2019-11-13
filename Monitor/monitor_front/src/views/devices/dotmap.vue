@@ -1,8 +1,18 @@
 <template>
+  <div class="app-container">
+  <div class="filter-container">
+    <el-select  class="filter-item" clearable placeholder="设备类型" style="width: 150px">
+      <el-option key="0" value="0" label="全部" />
+      <el-option v-for="item in devType" :key="item.key" :value="item.key" :label="item.value" />
+    </el-select>
+    <el-select  class="filter-item" clearable placeholder="区域" style="width: 200px">
+      <el-option key="0" value="0" label="全市" />
+      <el-option v-for="item in area" :key="item.key" :value="item.key" :label="item.value" />
+    </el-select>
+  </div>
   <div class="chart-container">
-    <div ref="chart" id="bMap">
-
-    </div>
+    <div ref="chart" id="bMap"></div>
+  </div>
   </div>
 </template>
 
@@ -15,6 +25,21 @@
     data() {
       return {
         devList: [],
+        devType: [
+          { key: 1, value: '路由器' },
+          { key: 2, value: '交换机' }
+        ],
+        area : [
+          { key: 1, value: '福田区' },
+          { key: 2, value: '南山区' },
+          { key: 3, value: '罗湖区' },
+          { key: 4, value: '龙华区' },
+          { key: 5, value: '宝安区' },
+          { key: 6, value: '盐田区' },
+          { key: 7, value: '龙岗区' },
+          { key: 8, value: '光明区' },
+          { key: 9, value: '坪大新区' },
+        ],
         opt:{
           title: {
             text: '',
@@ -202,14 +227,15 @@
 </script>
 
 <style scoped>
+
   .chart-container{
     position: relative;
     width: 100%;
-    height: calc(100vh - 84px);
+    height: calc(100vh - 150px);
   }
 
   #bMap{
     width: 100%;
-    height: calc(100vh - 84px);
+    height: calc(100vh - 150px);
   }
 </style>
