@@ -1,8 +1,14 @@
 <template>
-  <div>
-    <div class="chart-container">
-      <div ref="chart" style="height: 100%;width: 100%" />
-    </div>
+  <div class="area">
+    <el-container>
+      <el-header></el-header>
+      <el-main>
+        <div class="chart-container">
+          <div ref="chart" style="height: 80%;width: 100%" />
+        </div>
+      </el-main>
+    </el-container>
+
   </div>
 
 </template>
@@ -17,6 +23,9 @@ export default {
   minxins: [resize],
   data() {
     return {
+      ts:[[ "2019-11-12 08:00:00", 100],
+        ["2019-11-12 09:00:00", 120],
+        ["2019-11-12 10:00:00", 110 ]],
       chart: null,
       devName: '',
       portList: [],
@@ -37,16 +46,14 @@ export default {
       })
 
       const chartList = filterData
-      const tRange = []
       const upFlow = []
       const downFlow = []
       chartList.forEach((item) => {
-        tRange.push(item.getTime)
-        upFlow.push(item.portUp)
-        downFlow.push(item.portDown)
+        upFlow.push([item.getTime,item.portUp])
+        downFlow.push([item.getTime,item.portDown])
       })
 
-      return { chartList: chartList, tRange: tRange, upFlow: upFlow, downFlow: downFlow }
+      return { chartList: chartList, upFlow: upFlow, downFlow: downFlow }
     }
   },
   created() {
@@ -70,9 +77,9 @@ export default {
             }
           }
         },
-        color: ['#4472C5', '#ED7C30'],
+        color: [ '#80D645','#46A6FF'],
         legend: {
-          data: ['下行流量', '上行流量']
+          data: ['下行流量(KB/s)', '上行流量(KB/s)']
         },
         toolbox: {
           feature: {
@@ -87,9 +94,8 @@ export default {
         },
         xAxis: [
           {
-            type: 'category',
+            type: 'time',
             boundaryGap: false,
-            data: this.getList.tRange
           }
         ],
         yAxis: [
@@ -97,20 +103,32 @@ export default {
             type: 'value'
           }
         ],
-        series: [
+
+        dataZoom: [// 这个dataZoom组件，若未设置xAxisIndex或yAxisIndex，则默认控制x轴。
           {
-            name: '上行流量',
-            type: 'line',
-            stack: '总量',
-            areaStyle: {},
-            data: this.getList.upFlow
+            type: 'slider',//这个 dataZoom 组件是 slider 型 dataZoom 组件（只能拖动 dataZoom 组件导致窗口变化）
+            xAxisIndex: 0, //控制x轴
+            minValueSpan:3600 * 24 * 1000 * 0.5, //限制窗口大小的最小值
+            start: 0, 	// 左边在 0% 的位置
+            end: 50 	// 右边在 50% 的位置
           },
           {
-            name: '下行流量',
+            type: 'inside',//这个 dataZoom 组件是 inside 型 dataZoom 组件（能在坐标系内进行拖动，以及用滚轮（或移动触屏上的两指滑动）进行缩放）
+          }],
+        series: [
+          {
+            name: '下行流量(KB/s)',
             type: 'line',
             stack: '总量',
             areaStyle: {},
             data: this.getList.downFlow
+          },
+          {
+            name: '上行流量(KB/s)',
+            type: 'line',
+            stack: '总量',
+            areaStyle: {},
+           data: this.getList.upFlow
           }
         ]
       })
