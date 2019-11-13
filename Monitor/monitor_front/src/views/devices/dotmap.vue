@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
   <div class="filter-container">
-    <el-select  class="filter-item" clearable placeholder="设备类型" style="width: 150px">
+    <el-select v-model="listQuery.devType" class="filter-item" clearable placeholder="设备类型" style="width: 150px">
       <el-option key="0" value="0" label="全部" />
       <el-option v-for="item in devType" :key="item.key" :value="item.key" :label="item.value" />
     </el-select>
-    <el-select  class="filter-item" clearable placeholder="区域" style="width: 200px">
+    <el-select v-model="listQuery.area" class="filter-item" clearable placeholder="区域" style="width: 200px">
       <el-option key="0" value="0" label="全市" />
       <el-option v-for="item in area" :key="item.key" :value="item.key" :label="item.value" />
     </el-select>
@@ -27,6 +27,7 @@
 import { fetchList } from '@/api/devlist'
 import echarts from 'echarts'
 import bmap from 'echarts/extension/bmap/bmap'
+import axios from 'axios'
 
   export default {
     data() {
@@ -36,6 +37,10 @@ import bmap from 'echarts/extension/bmap/bmap'
           { key: 1, value: '路由器' },
           { key: 2, value: '交换机' }
         ],
+        listQuery:{
+          devType:'',
+          area:''
+        },
         area : [
           { key: 1, value: '福田区' },
           { key: 2, value: '南山区' },
@@ -45,7 +50,7 @@ import bmap from 'echarts/extension/bmap/bmap'
           { key: 6, value: '盐田区' },
           { key: 7, value: '龙岗区' },
           { key: 8, value: '光明区' },
-          { key: 9, value: '坪大新区' }
+          { key: 9, value: '坪大片区'}
         ],
         opt:{
           title: {
@@ -63,8 +68,9 @@ import bmap from 'echarts/extension/bmap/bmap'
           },
           bmap: {
             center: [114.07	, 22.62],
-            zoom: 12,
+            zoom: 8,
             roam: true,
+
             mapStyle: {
               styleJson: [{
                 'featureType': 'water',
@@ -174,7 +180,7 @@ import bmap from 'echarts/extension/bmap/bmap'
           series : [
             {
               name: '',
-              type: 'effectScatter',
+              type: 'scatter',
               coordinateSystem: 'bmap',
               data: [],
               symbolSize: function (val) {
@@ -192,7 +198,9 @@ import bmap from 'echarts/extension/bmap/bmap'
               },
               itemStyle: {
                 normal: {
-                  color: '#66CCFF'
+                  color: '#FFE793',
+                  borderColor: '#000000',
+                  borderWidth: 1
                 }
               }
             }
@@ -202,30 +210,51 @@ import bmap from 'echarts/extension/bmap/bmap'
     }
   },
   mounted() {
-    this.getData()
-
-    //      console.log(this.opt)
+    fetchList(this.listQuery).then(res => {
+      if (res.code === 20000){
+        this.devList = res.data.items;
+        this.getMap();
+      }
+      }).catch(err => {
+      console.log(err)
+    })
   },
   methods: {
-    getData() {
-      fetchList().then(res => {
-        if (res.code === 20000) {
-          const list = []
-          this.devList = res.data.items
-          const data = [...this.devList]
-          for (let i = 0; i < data.length; i++) {
-            list.push({
-              name: data[i].devName,
-              value: [data[i].devLon, data[i].devLat, 100]
-            })
-          }
-          this.opt.series[0].data = [...list]
-          this.chart = echarts.init(this.$refs.chart)
-          this.chart.setOption(this.opt)
-        }
-      }).catch(err => {
-        console.log(err)
+    getMap() {
+      let {devType, area} = this.listQuery;
+      let filterData = [];
+
+      filterData = this.devList.filter(item => {
+        if (devType === 1 && item.devType !== '路由器') return false
+        if (devType === 2 && item.devType !== '交换机') return false
+        if (area === 1 && item.devArea !== "福田区") return false
+        if (area === 2 && item.devArea !== "南山区") return false
+        if (area === 3 && item.devArea !== "罗湖区") return false
+        if (area === 4 && item.devArea !== "龙华区") return false
+        if (area === 5 && item.devArea !== "宝安区") return false
+        if (area === 6 && item.devArea !== "盐田区") return false
+        if (area === 7 && item.devArea !== "龙岗区") return false
+        if (area === 8 && item.devArea !== "光明区") return false
+        if (area === 9 && item.devArea !== "坪大片区") return false
+        return true
       })
+
+      this.opt.series[0].data = [...this.convertData(filterData)]
+      this.chart = echarts.init(this.$refs.chart)
+      this.chart.setOption(this.opt)
+    },
+    convertData(data) {
+      const list = []
+      for (let i = 0; i < data.length; i++) {
+        list.push({
+          name: data[i].devName,
+          value: [data[i].devLon, data[i].devLat, 100]
+        })
+      }
+      return list
+    },
+    handleFilter() {
+      this.getMap();
     }
   }
 }
