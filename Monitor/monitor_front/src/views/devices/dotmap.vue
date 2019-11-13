@@ -27,7 +27,6 @@
 import { fetchList } from '@/api/devlist'
 import echarts from 'echarts'
 import bmap from 'echarts/extension/bmap/bmap'
-import axios from 'axios'
 
   export default {
     data() {
@@ -62,7 +61,7 @@ import axios from 'axios'
           tooltip : {
             trigger: 'item',
             formatter: function (params) {
-              var value = (params.value + '').split(',');
+              let value = (params.value + '').split(',');
               return params.name + '<br/>' + '坐标' + ': ' + '['+value[0]+','+value[1]+']'+'<br/>'+ '端口故障率'+value[2];
             }
           },
