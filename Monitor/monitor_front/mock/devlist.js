@@ -5,6 +5,7 @@ const count = 30
 
 for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
+    id:"@increment",
     devName: '@ctitle(3,5)',
     devIP:'@ip',
     devAddress:'@ctitle(5,10)',
