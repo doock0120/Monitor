@@ -24,10 +24,10 @@ const devicesRouter = {
       meta: { title: '设备端口', noCache: true }
     },
     {
-      path: 'flowchart',
-      component: () => import('@/views/devices/flowchart'),
-      name: 'DeviceFlowchart',
-      meta: { title: '流量统计', noCache: true }
+      path: 'dotmap',
+      component: () => import('@/views/devices/dotmap'),
+      name: 'DotMap',
+      meta: { 'title': '打点图', noCache: true }
     }
   ]
 }
