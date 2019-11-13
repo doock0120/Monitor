@@ -7,6 +7,7 @@ for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
     id: "@increment",
     devName: '@ctitle(3,5)',
+    'devArea|1': ["福田区","南山区","罗湖区","龙华区","宝安区","盐田区","龙岗区","光明区","坪大片区",],
     devIP:'@ip',
     devAddress:'@ctitle(5,10)',
     'devType|1':["交换机","路由器"],
