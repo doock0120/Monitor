@@ -22,6 +22,12 @@ const devicesRouter = {
       component: () => import('@/views/devices/interface'),
       name: 'DeviceInterface',
       meta: { title: '设备端口', noCache: true }
+    },
+    {
+      path: 'flowchart',
+      component: () => import('@/views/devices/flowchart'),
+      name: 'DeviceFlowchart',
+      meta: { title: '流量统计', noCache: true }
     }
   ]
 }
