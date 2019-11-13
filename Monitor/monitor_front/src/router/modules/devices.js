@@ -25,9 +25,15 @@ const devicesRouter = {
     },
     {
       path: 'dotmap',
-      component: () => import ('@/views/devices/dotmap'),
+      component: () => import('@/views/devices/dotmap'),
       name: 'DotMap',
-      meta: {'title': '打点图', noCache: true }
+      meta: { 'title': '打点图', noCache: true }
+    },
+    {
+      path: 'flowchart',
+      component: () => import('@/views/devices/flowchart'),
+      name: 'DeviceFlowchart',
+      meta: { title: '流量统计', noCache: true }
     }
   ]
 }

@@ -13,13 +13,14 @@
   <div class="chart-container">
     <div ref="chart" id="bMap"></div>
   </div>
+
   </div>
 </template>
 
 <script>
-  import {fetchList} from '@/api/devlist'
-  import echarts from 'echarts'
-  import bmap from 'echarts/extension/bmap/bmap'
+import { fetchList } from '@/api/devlist'
+import echarts from 'echarts'
+import bmap from 'echarts/extension/bmap/bmap'
 
   export default {
     data() {
@@ -38,7 +39,7 @@
           { key: 6, value: '盐田区' },
           { key: 7, value: '龙岗区' },
           { key: 8, value: '光明区' },
-          { key: 9, value: '坪大新区' },
+          { key: 9, value: '坪大新区' }
         ],
         opt:{
           title: {
@@ -166,10 +167,10 @@
           },
           series : [
             {
-              name: 'pm2.5',
+              name: '',
               type: 'effectScatter',
               coordinateSystem: 'bmap',
-              data:[],
+              data: [],
               symbolSize: function (val) {
                 return val[2] / 10;
               },
@@ -185,45 +186,43 @@
               },
               itemStyle: {
                 normal: {
-                  color: '#37F241',
-                  shadowBlur: 10,
-                  shadowColor: '#333'
+                  color: 'purple'
                 }
               }
             }
-          ]
-        },
-        chart: null,
-      }
-    },
-    mounted() {
-      this.getData();
+        ]
+      },
+      chart: null
+    }
+  },
+  mounted() {
+    this.getData()
 
-//      console.log(this.opt)
-    },
-    methods: {
-      getData() {
-        fetchList().then(res => {
-          if (res.code === 20000) {
-            let list=[]
-            this.devList = res.data.items;
-            let data=[...this.devList];
-            for(let i=0;i<data.length;i++) {
-              list.push({
-                name:data[i].devName,
-                value:[data[i].devLon, data[i].devLat, 100]
-              })
-            }
-            this.opt.series[0].data=[...list];
-            this.chart=echarts.init(this.$refs.chart);
-            this.chart.setOption(this.opt);
+    //      console.log(this.opt)
+  },
+  methods: {
+    getData() {
+      fetchList().then(res => {
+        if (res.code === 20000) {
+          const list = []
+          this.devList = res.data.items
+          const data = [...this.devList]
+          for (let i = 0; i < data.length; i++) {
+            list.push({
+              name: data[i].devName,
+              value: [data[i].devLon, data[i].devLat, 100]
+            })
           }
-        }).catch(err => {
-          console.log(err)
-        })
-      }
+          this.opt.series[0].data = [...list]
+          this.chart = echarts.init(this.$refs.chart)
+          this.chart.setOption(this.opt)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
+}
 </script>
 
 <style scoped>
