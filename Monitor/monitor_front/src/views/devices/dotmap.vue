@@ -9,6 +9,12 @@
       <el-option key="0" value="0" label="全市" />
       <el-option v-for="item in area" :key="item.key" :value="item.key" :label="item.value" />
     </el-select>
+    <el-button
+      class="filter-item" type="primary"
+      style="margin-left: 10px;"
+      icon="el-icon-search"
+      @click="handleFilter"
+    >查询</el-button>
   </div>
   <div class="chart-container">
     <div ref="chart" id="bMap"></div>
@@ -52,7 +58,7 @@ import bmap from 'echarts/extension/bmap/bmap'
             trigger: 'item',
             formatter: function (params) {
               var value = (params.value + '').split(',');
-              return params.name + '<br/>' + '坐标' + ': ' + '['+value[0]+','+value[1]+']'+'<br/>'+value[2];
+              return params.name + '<br/>' + '坐标' + ': ' + '['+value[0]+','+value[1]+']'+'<br/>'+ '端口故障率'+value[2];
             }
           },
           bmap: {
@@ -186,7 +192,7 @@ import bmap from 'echarts/extension/bmap/bmap'
               },
               itemStyle: {
                 normal: {
-                  color: 'purple'
+                  color: '#66CCFF'
                 }
               }
             }
