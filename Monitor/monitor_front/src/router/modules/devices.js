@@ -32,8 +32,8 @@ const devicesRouter = {
     {
       path: 'flowchart',
       component: () => import('@/views/devices/flowchart'),
-      name: 'DeviceFlowchart',
-      meta: { title: '流量统计', noCache: true }
+      name: 'FlowChart',
+      // meta: { title: '流量统计', noCache: true }
     }
   ]
 }

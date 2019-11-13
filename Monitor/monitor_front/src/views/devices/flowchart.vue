@@ -1,7 +1,13 @@
 <template>
   <div class="area">
     <el-container>
-      <el-header></el-header>
+      <el-header>
+        <el-row>
+          <el-col :span="1"style="padding-top: 20px" :offset="22">
+            <el-button type="primary" @click="goBack()">返回</el-button>
+          </el-col>
+        </el-row>
+      </el-header>
       <el-main>
         <div class="chart-container">
           <div ref="chart" style="height: 80%;width: 100%" />
@@ -23,25 +29,29 @@ export default {
   minxins: [resize],
   data() {
     return {
-      ts:[[ "2019-11-12 08:00:00", 100],
-        ["2019-11-12 09:00:00", 120],
-        ["2019-11-12 10:00:00", 110 ]],
       chart: null,
       devName: '',
       portList: [],
       listQuery: {
-        portName: 'Gi 1/1'
+        refIP:'',
+        portName: ''
       }
+    }
+  },
+  methods:{
+    goBack(){
+      this.$router.back();
     }
   },
   computed: {
     getList() {
-      const { portName } = this.listQuery
+      const { portName,refIP } = this.listQuery
 
       // 进行过滤
       let filterData = []
       filterData = this.portList.filter(item => {
         if (portName && item.portName !== portName) { return false }
+        if (refIP && item.refIP !== refIP) { return false }
         return true
       })
 
@@ -53,12 +63,15 @@ export default {
         downFlow.push([item.getTime,item.portDown])
       })
 
-      return { chartList: chartList, upFlow: upFlow, downFlow: downFlow }
+      return { upFlow: upFlow, downFlow: downFlow }
     }
   },
   created() {
+    this.listQuery.refIP=this.$route.params.refIP;
+    this.listQuery.portName=this.$route.params.portName;
   },
   mounted() {
+
     fetchList(this.listQuery).then(res => {
       this.devName = res.data.title
       this.portList = res.data.items

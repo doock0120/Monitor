@@ -53,7 +53,15 @@
       <el-table-column prop="refIP" label="归属设备IP" width="130" />
       <el-table-column sortable prop="portUp" label="上行流量(KB/s)" width="150" />
       <el-table-column sortable prop="portDown" label="下行流量(KB/s)" width="150" />
-      <el-table-column prop="getTime" label="统计时间" width="160" />
+      <el-table-column label="历史流量" width="160" >
+        <template slot-scope="scope">
+          <router-link :to="{name:'FlowChart', params:{portName:scope.row.portName,refIP:scope.row.refIP}}">
+          <el-button type="text" size="medium">
+            查看
+          </el-button>
+          </router-link>
+        </template>
+      </el-table-column>
     </el-table>
 
     <!--分页组件-->
@@ -66,6 +74,8 @@
 import { fetchList } from '@/api/portlist'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils'
+
+import FlowChart from '@/views/devices/flowchart'
 
 export default {
   components: {
