@@ -17,6 +17,9 @@ for (let i = 0; i < count; i++) {
   }))
 }
 
+List.unshift({id:9001,devName:'XSK5F_DCN_SW1',devArea:'福田区',devIP:'192.168.1.1',devAddress: 'SZ',devType:'路由器',devOperator: '张三',devLon:114,devLat:22});
+List.unshift({id:9002,devName:'XSK5F_DCN_SW2',devArea:'南山区',devIP:'192.168.1.2',devAddress: 'SZ',devType:'交换机',devOperator: '李四',devLon:113,devLat:21});
+
 export default [
   {
     url: '/device/list',

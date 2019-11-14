@@ -30,11 +30,11 @@ export default {
   data() {
     return {
       chart: null,
-      devName: '',
+      devName: 'XSK5F_DCN_SW1',//默认设备名称
       portList: [],
       listQuery: {
-        refIP:'',
-        portName: ''
+        refIP:'192.168.1.1', //默认设备IP
+        portName: 'Gi 1/1' //默认端口
       }
     }
   },
@@ -67,8 +67,11 @@ export default {
     }
   },
   created() {
-    this.listQuery.refIP=this.$route.params.refIP;
-    this.listQuery.portName=this.$route.params.portName;
+    if(this.$route.params.refIP)
+    {
+      this.listQuery.refIP=this.$route.params.refIP;
+      this.listQuery.portName=this.$route.params.portName;
+    }
   },
   mounted() {
 

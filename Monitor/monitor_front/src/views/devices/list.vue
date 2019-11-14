@@ -46,24 +46,31 @@
       >
         添加
       </el-button>
+
+
     </div>
 
     <!--设备列表数据表格-->
     <el-table v-loading="listLoading" :data="pageData" border>
       <el-table-column sortable prop="id" label="编号" align="center" min-width="75" />
-      <el-table-column prop="devName" label="设备名称" align="center" />
-      <el-table-column prop="devIP" label="设备IP" align="center" min-width="130" />
+      <el-table-column prop="devName" label="设备名称" align="center" min-width="160" />
+      <el-table-column prop="devIP" label="设备IP" align="center" min-width="100" />
       <el-table-column prop="devType" label="设备类型" align="center" />
       <el-table-column prop="devOperator" label="包机人" align="center" />
       <el-table-column prop="devAddress" label="设备地址" min-width="300" />
 
-      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="260" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
           <el-button type="danger" size="mini" @click="handleDelete(row)">
             删除
+          </el-button>
+          <el-button type="primary" size="small" plain>
+            <router-link :to="{name:'DeviceInterface', params:{devName:row.devName,devIP:row.devIP}}">
+              端口查看
+            </router-link>
           </el-button>
         </template>
       </el-table-column>
@@ -85,6 +92,8 @@
 
 import Pagination from '@/components/Pagination'
 import { fetchList } from '@/api/devlist'
+
+import DeviceInterface from '@/views/devices/interface'
 
 export default {
   components: { Pagination },

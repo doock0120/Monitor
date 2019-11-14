@@ -2,7 +2,7 @@
   <div class="app-container">
     <!--搜索条件区-->
     <div class="filter-container">
-      <el-row type="flex" justify="end" :gutter="20">
+      <el-row type="flex" :gutter="10">
         <el-col :span="20">
           <el-alert
             :title="'设备名称：'+devName"
@@ -10,7 +10,7 @@
             :closable="false"
           />
         </el-col>
-        <el-col :span="1" style="padding-top: 8px" :offset="1">
+        <el-col :span="1" style="padding-top: 8px">
           <svg-icon icon-class="search" />
         </el-col>
         <el-col :span="6">
@@ -21,7 +21,7 @@
             @keyup.enter.native="handleFilter"
           />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <el-input
             v-model="listQuery.portDec"
             placeholder="端口描述"
@@ -38,6 +38,9 @@
         <el-col :span="2">
           <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload" />
         </el-col>
+        <el-col :span="1">
+          <el-button class="filter-item" type="primary" @click="goBack()">返回</el-button>
+        </el-col>
       </el-row>
 
     </div>
@@ -53,13 +56,13 @@
       <el-table-column prop="refIP" label="归属设备IP" width="130" />
       <el-table-column sortable prop="portUp" label="上行流量(KB/s)" width="150" />
       <el-table-column sortable prop="portDown" label="下行流量(KB/s)" width="150" />
-      <el-table-column label="历史流量" width="160" >
+      <el-table-column label="历史流量" width="100" >
         <template slot-scope="scope">
+          <el-button type="primary" size="small">
           <router-link :to="{name:'FlowChart', params:{portName:scope.row.portName,refIP:scope.row.refIP}}">
-          <el-button type="text" size="medium">
             查看
-          </el-button>
           </router-link>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -96,7 +99,9 @@ export default {
         portStat: '',
         portName: ''
       },
-      devName: '',
+      searchTime:'2019-11-11 18:00:00',
+      devIP:'192.168.1.1', //默认显示该设备端口
+      devName: 'XSK5F_DCN_SW1',//默认设备名称
       portList: [],
       msg: 'vue模板页',
       pStas: [
@@ -127,16 +132,32 @@ export default {
       return { pageData: pageData, total: total }
     }
   },
+  created(){
+    if(this.$route.params.devName){
+      this.devName = this.$route.params.devName
+      this.devIP = this.$route.params.devIP
+    }
+  },
   mounted() {
+
+
     fetchList(this.listQuery)
       .then(
         res => {
-          this.devName = res.data.title
-          this.portList = res.data.items
+          let tmpList=res.data.items.filter(item => {
+            if (this.devIP && item.refIP.indexOf(this.devIP) === -1) { return false }
+            if (this.searchTime && item.getTime.indexOf(this.searchTime) === -1) { return false }
+            return true
+          })
+
+          this.portList = tmpList
         }
       )
   },
   methods: {
+    goBack(){
+      this.$router.back();
+    },
     handleFilter() {},
     handleDownload() {
         import('@/vendor/Export2Excel').then(excel => {

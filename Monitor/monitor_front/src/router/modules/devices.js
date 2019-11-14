@@ -21,7 +21,7 @@ const devicesRouter = {
       path: 'interface',
       component: () => import('@/views/devices/interface'),
       name: 'DeviceInterface',
-      meta: { title: '设备端口', noCache: true }
+      // meta: { title: '设备端口', noCache: true }
     },
     {
       path: 'dotmap',
