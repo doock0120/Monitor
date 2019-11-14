@@ -67,16 +67,19 @@ export default {
     }
   },
   created() {
+    console.log(this.$route.params.refIP)
     if(this.$route.params.refIP)
     {
+      this.devName = this.$route.params.devName;
       this.listQuery.refIP=this.$route.params.refIP;
       this.listQuery.portName=this.$route.params.portName;
     }
+    console.log(this.listQuery)
+    console.log(this.devName)
   },
   mounted() {
 
     fetchList(this.listQuery).then(res => {
-      this.devName = res.data.title
       this.portList = res.data.items
 
       this.chart = echarts.init(this.$refs.chart)

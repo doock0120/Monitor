@@ -178,7 +178,6 @@ export default [
       return {
         code: 20000,
         data: {
-          title:'XSK5F_DCN_SW1',
           items: List
         }
       }

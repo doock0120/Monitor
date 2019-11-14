@@ -59,7 +59,7 @@
       <el-table-column label="历史流量" width="100" >
         <template slot-scope="scope">
           <el-button type="primary" size="small">
-          <router-link :to="{name:'FlowChart', params:{portName:scope.row.portName,refIP:scope.row.refIP}}">
+          <router-link :to="{name:'FlowChart', params:{portName:scope.row.portName,refIP:scope.row.refIP,devName:devName}}">
             查看
           </router-link>
           </el-button>
