@@ -72,7 +72,7 @@ import bmap from 'echarts/extension/bmap/bmap'
           },
           bmap: {
             center: [114.07	, 22.62],
-            zoom: 8,
+            zoom: 12,
             roam: true,
 
             mapStyle: {
@@ -186,10 +186,12 @@ import bmap from 'echarts/extension/bmap/bmap'
             {
               name: '',
               type: 'scatter',
+              symbol: 'rect',
               coordinateSystem: 'bmap',
               data: [],
+              //讲第三个维度的数据转换到显示点的大小
               symbolSize: function (val) {
-                return val[2] / 10;
+                return val[2] /10;
               },
               label: {
                 normal: {
