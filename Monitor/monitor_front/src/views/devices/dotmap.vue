@@ -60,6 +60,11 @@ import bmap from 'echarts/extension/bmap/bmap'
           },
           tooltip : {
             trigger: 'item',
+            textStyle: {
+              fontSize: 15,
+              color: '#FFFFFF'
+            },
+            backgroundColor: 'rgba(103,194,58,0.8)',
             formatter: function (params) {
               let value = (params.value + '').split(',');
               return params.name + '<br/>' + '坐标' + ': ' + '['+value[0]+','+value[1]+']'+'<br/>'+ '端口故障率'+value[2];
@@ -93,7 +98,8 @@ import bmap from 'echarts/extension/bmap/bmap'
                 'featureType': 'highway',
                 'elementType': 'all',
                 'stylers': {
-                  'color': '#F6E3A3'
+                  'color': '#F6E3A3',
+                  'visibility':'off'
                 }
               }, {
                 'featureType': 'highway',
@@ -171,7 +177,7 @@ import bmap from 'echarts/extension/bmap/bmap'
                   "featureType": "district",
                   "elementType": "labels",
                   "stylers": {
-                    "visibility": "on"
+                    "visibility": "off"
                   }
               }]
             }
@@ -187,7 +193,7 @@ import bmap from 'echarts/extension/bmap/bmap'
               },
               label: {
                 normal: {
-                  formatter: '{b}',
+                  formatter: '',
                   position: 'right',
                   show: false
                 },
@@ -264,11 +270,11 @@ import bmap from 'echarts/extension/bmap/bmap'
   .chart-container{
     position: relative;
     width: 100%;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 140px);
   }
 
   #bMap{
     width: 100%;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 140px);
   }
 </style>
