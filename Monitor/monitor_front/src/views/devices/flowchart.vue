@@ -23,7 +23,7 @@
 import echarts from 'echarts'
 import resize from '@/components/Charts/mixins/resize'
 
-import { fetchList } from '@/api/portlist'
+import { fetchPort } from '@/api/portlist'
 
 export default {
   minxins: [resize],
@@ -79,7 +79,7 @@ export default {
   },
   mounted() {
 
-    fetchList(this.listQuery).then(res => {
+    fetchPort(this.listQuery).then(res => {
       this.portList = res.data.items
 
       this.chart = echarts.init(this.$refs.chart)
