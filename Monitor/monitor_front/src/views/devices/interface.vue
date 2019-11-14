@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/portlist'
+import { fetchPort } from '@/api/portlist'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils'
 
@@ -141,7 +141,7 @@ export default {
   mounted() {
 
 
-    fetchList(this.listQuery)
+    fetchPort(this.listQuery)
       .then(
         res => {
           let tmpList=res.data.items.filter(item => {

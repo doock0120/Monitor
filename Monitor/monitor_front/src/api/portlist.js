@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchPort(query) {
   return request({
     url: '/port/list',
     method: 'get',
