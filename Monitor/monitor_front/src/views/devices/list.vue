@@ -68,7 +68,7 @@
             删除
           </el-button>
           <el-button type="primary" size="small" plain>
-            <router-link :to="{name:'DeviceInterface', params:{devName:row.devName,devIP:row.devIP}}">
+            <router-link :to="{name:'DeviceInterface', query:{devName:row.devName,devIP:row.devIP}}">
               端口查看
             </router-link>
           </el-button>

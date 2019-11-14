@@ -59,7 +59,7 @@
       <el-table-column label="历史流量" width="100" >
         <template slot-scope="scope">
           <el-button type="primary" size="small">
-          <router-link :to="{name:'FlowChart', params:{portName:scope.row.portName,refIP:scope.row.refIP,devName:devName}}">
+          <router-link :to="{name:'FlowChart', query:{portName:scope.row.portName,refIP:scope.row.refIP,devName:devName}}">
             查看
           </router-link>
           </el-button>
@@ -133,9 +133,9 @@ export default {
     }
   },
   created(){
-    if(this.$route.params.devName){
-      this.devName = this.$route.params.devName
-      this.devIP = this.$route.params.devIP
+    if(this.$route.query.devName){
+      this.devName = this.$route.query.devName
+      this.devIP = this.$route.query.devIP
     }
   },
   mounted() {

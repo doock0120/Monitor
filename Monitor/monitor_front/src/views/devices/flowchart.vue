@@ -67,12 +67,12 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.params.refIP)
-    if(this.$route.params.refIP)
+    console.log(this.$route.query.refIP)
+    if(this.$route.query.refIP)
     {
-      this.devName = this.$route.params.devName;
-      this.listQuery.refIP=this.$route.params.refIP;
-      this.listQuery.portName=this.$route.params.portName;
+      this.devName = this.$route.query.devName;
+      this.listQuery.refIP=this.$route.query.refIP;
+      this.listQuery.portName=this.$route.query.portName;
     }
     console.log(this.listQuery)
     console.log(this.devName)
