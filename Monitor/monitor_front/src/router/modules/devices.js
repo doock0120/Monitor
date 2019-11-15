@@ -40,6 +40,12 @@ const devicesRouter = {
       component: () => import('@/views/devices/alarm'),
       name: 'Alarm',
       meta: { title: '告警分析', noCache: true }
+    },
+    {
+      path: 'topo',
+      component: () => import('@/views/devices/topo'),
+      name: 'Topo',
+      meta: { title: '网络拓扑', noCache: true }
     }
   ]
 }
