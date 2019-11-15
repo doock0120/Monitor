@@ -12,7 +12,7 @@ for (let i = 0; i < count; i++) {
     },
     'portStat|1':['开启','关闭','中断'],
     portDec: '@title(3,5)',
-    refIP:'@ip',
+    refIP:'192.168.1.1',
     getTime: '@datetime',
     'portUp|50-100':1,
     'portDown|100-200':1

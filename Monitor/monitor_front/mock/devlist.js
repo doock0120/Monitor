@@ -9,7 +9,7 @@ for (let i = 0; i < count; i++) {
     devName: '@ctitle(3,5)',
     'devArea|1': ["福田区","南山区","罗湖区","龙华区","宝安区","盐田区","龙岗区","光明区","坪大片区",],
     devIP:'@ip',
-    devAddress:'@ctitle(5,10)',
+    'devAddress|1':['新时空机房','新世界机房','新东方机房'],
     'devType|1':["交换机","路由器"],
     devOperator: '@cname',
     'devLon|113-114.2':1,
