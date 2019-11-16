@@ -36,23 +36,27 @@
         </div>
       </div>
 
-      <el-table  border>
-        <el-table-column prop="devName" label="设备名称" align="center" min-width="75" />
-        <el-table-column prop="time" label="最近一次告警时间" align="center" min-width="160" />
+      <el-table :data="getList.pageData" border fit highlight-current-row style="width: 100%;">
+        <el-table-column prop="portName" label="端口号" align="center" min-width="75" />
+        <el-table-column prop="getTime" label="最近一次告警时间" align="center" min-width="160" />
       </el-table>
 
+      <pagination v-show="getList.total>0" :total="getList.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
 </template>
 
 <script>
   import {fetchList} from '@/api/devlist'
   import {fetchPort} from '@/api/portlist'
+  import Pagination from '@/components/Pagination'
   import echarts from 'echarts'
   export default {
     data() {
       return {
         list:[],
         listQuery:{
+          page: 1,
+          limit: 5,
           devAddress:'',
           devName:''
         },
@@ -156,10 +160,12 @@
         }
       }
     },
+    components: {
+      Pagination
+    },
     mounted(){
       fetchList().then(res=> {
-        this.devList = res.data.items;
-        console.log(this.devList)
+        this.devList=res.data.items;
         for (let i = 0; i < this.devList.length; i++){
           this.nameOptions.push({
             key:this.devList[i].devIP,
@@ -173,7 +179,6 @@
 
       fetchPort().then(res=> {
         this.portList = res.data.items;
-        console.log(this.portList)
         this.getChart2();
       }).catch(err=>{
         console.log(err)
@@ -197,9 +202,7 @@
           }
         }
 
-        console.log(list)
         this.opt1.series[0].data = [...list]
-        console.log(this.opt1.series[0].data);
 
         this.chart1 = echarts.init(this.$refs.chart1)
         this.chart1.setOption(this.opt1)
@@ -224,11 +227,29 @@
         }
 
         this.opt2.series[0].data = [...list]
-        console.log(this.opt2.series[0].data);
 
         this.chart2 = echarts.init(this.$refs.chart2)
         this.chart2.setOption(this.opt2)
-      },
+      }
+    },
+    computed:{
+      getList(){
+        const { page, limit, devName } = this.listQuery
+
+        // 进行过滤
+        let filterData = []
+        filterData = this.portList.filter(item => {
+          if (devName === item.refIP) { return false }
+          return true
+        })
+
+        const pageData = filterData.filter((item, idx) => {
+          return idx >= limit * (page - 1) && idx < limit * page
+        })
+        const total = filterData.length
+
+        return { pageData: pageData, total: total }
+      }
     }
   }
 </script>
@@ -236,7 +257,6 @@
 <style scoped>
 
   .chart-container{
-    margin-top: 20px;
     position: relative;
     width: 100%;
     height: 300px;
