@@ -76,6 +76,74 @@
       </el-table-column>
     </el-table>
 
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="编号" prop="id">
+          <el-input :disabled="dialogStatus==='update'"  v-model="temp.id" />
+        </el-form-item>
+        <el-form-item label="设备名称" prop="devName">
+          <el-input v-model="temp.devName" />
+        </el-form-item>
+        <el-form-item label="设备IP" prop="devIP">
+          <el-input v-model="temp.devIP" />
+        </el-form-item>
+        <el-form-item label="设备类型" prop="devType">
+          <el-input v-model="temp.devType" />
+        </el-form-item>
+        <el-form-item label="包机人" prop="devOperator">
+          <el-input v-model="temp.devOperator" />
+        </el-form-item>
+        <el-form-item label="设备地址" prop="devAddress">
+          <el-input v-model="temp.devAddress" />
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="提示" :visible.sync="dialogDelVisible">
+      <span>请确认是否删除？<br><br></span>
+
+      <el-form :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="编号" prop="id">
+          <el-input disabled  v-model="temp.id" />
+        </el-form-item>
+        <el-form-item label="设备名称" prop="devName">
+          <el-input disabled  v-model="temp.devName" />
+        </el-form-item>
+        <el-form-item label="设备IP" prop="devIP">
+          <el-input disabled  v-model="temp.devIP" />
+        </el-form-item>
+        <el-form-item label="设备类型" prop="devType">
+          <el-input disabled  v-model="temp.devType" />
+        </el-form-item>
+        <el-form-item label="包机人" prop="devOperator">
+          <el-input disabled  v-model="temp.devOperator" />
+        </el-form-item>
+        <el-form-item label="设备地址" prop="devAddress">
+          <el-input disabled  v-model="temp.devAddress" />
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogDelVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="delData()">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+
+
     <!--分页器-->
     <pagination
       v-show="total>0"
@@ -121,7 +189,23 @@ export default {
       devType: [
         { key: 1, value: '路由器' },
         { key: 2, value: '交换机' }
-      ]
+      ],
+
+      temp: {
+        id: undefined,
+        devName:'',
+        devIP: '',
+        devType:'',
+        devOperator: '',
+        devAddress:''
+      },
+      dialogFormVisible: false,
+      dialogDelVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: '编辑',
+        create: '新增'
+      }
     }
   },
   mounted() {
@@ -152,7 +236,7 @@ export default {
     },
     // 筛选、分页方法
     paging() {
-      const { page, limit, devName, devIP, devOperator, devType } = this.listQuery
+      const {page, limit, devName, devIP, devOperator, devType} = this.listQuery
 
       // 对deptList数据进行过滤
       let filterData = []
@@ -177,14 +261,99 @@ export default {
       this.paging()
     },
 
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        devName: '',
+        devIP: '',
+        devType: '',
+        devOperator: '',
+        devAddress: ''
+      }
+    },
     handleCreate() {
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    createData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+//            savList(this.temp).then(res=>{
+          this.deviceList.unshift(this.temp)
+          this.handleFilter()
+          this.dialogFormVisible = false
+          this.$notify({
+            title: 'Success',
+            message: 'Created Successfully',
+            type: 'success',
+            duration: 2000
+          })
+//            })
+//                this.getList();
+        }
+      })
+
 
     },
     handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          for (const v of this.deviceList) {
+            if (v.id === this.temp.id) {
+//                updList(this.temp).then(res=>{
+              const index = this.deviceList.indexOf(v)
+              this.deviceList.splice(index, 1, this.temp)
+              this.handleFilter()
+//                })
+              break
+            }
+          }
+          this.dialogFormVisible = false
+          this.$notify({
+            title: 'Success',
+            message: 'Update Successfully',
+            type: 'success',
+            duration: 2000
+          })
+//                this.getList()
+        }
+      })
+
 
     },
     handleDelete(row) {
-
+      this.temp = row // copy obj
+      this.dialogDelVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    delData() {
+//        delList({id:this.temp.id}).then(res=>{
+      this.$notify({
+        title: 'Success',
+        message: '删除成功',
+        type: 'success',
+        duration: 2000
+      })
+      const index = this.deviceList.indexOf(this.temp)
+      this.deviceList.splice(index, 1)
+      this.handleFilter()
+      this.dialogDelVisible = false
+//            this.getList();
+//        })
     }
   }
 }
